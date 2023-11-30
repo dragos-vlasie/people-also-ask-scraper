@@ -34,7 +34,6 @@ const [results, setResults] = useState({});
       <meta name="description" content={pageDescription} />
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <TimelineComponent />
     <div>
       <button onClick={fetchResults}>Fetch Results</button>
       <pre>{JSON.stringify(results, null, 2)}</pre>
