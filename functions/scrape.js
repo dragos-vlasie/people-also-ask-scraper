@@ -1,11 +1,18 @@
-// functions/scrape.js
-const puppeteer = require('puppeteer');
+const chromium = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer-core');
 
 exports.handler = async function (event, context) {
   try {
-    const queries = event.queryStringParameters.queries.split(',');
+    const requestBody = JSON.parse(event.body || '{}');
+    const queries = requestBody.queries || [];
+    console.log("----------", queries);
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath,
+      headless: true,
+    });
+
     const page = await browser.newPage();
 
     const results = {};
@@ -13,13 +20,23 @@ exports.handler = async function (event, context) {
     for (const query of queries) {
       const searchURL = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
       await page.goto(searchURL);
-      await page.waitForSelector('.related-question-pair');
 
-      const questions = await page.$$eval('.related-question-pair', (boxes) =>
-        boxes.map((box) => box.textContent)
-      );
+      const isSelectorPresent = await page.$('.related-question-pair');
 
-      results[query] = questions;
+      if (isSelectorPresent) {
+        await page.waitForSelector('.related-question-pair');
+
+        const questions = await page.$$eval('.related-question-pair', (boxes) =>
+          boxes.map((box) => box.textContent)
+        );
+
+        results[query] = questions;
+      } else {
+        // If the selector is not present, provide a custom message
+        results[query] = [
+          "There are no 'People Also Ask Questions'. Please add more keywords or try another query.",
+        ];
+      }
     }
 
     await browser.close();

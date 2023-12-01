@@ -1,2 +1,4 @@
 [build]
   functions = "functions"
+  timeout = 3000
+  
