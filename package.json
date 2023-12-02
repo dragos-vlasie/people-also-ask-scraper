@@ -32,10 +32,6 @@
     "not dead",
     "not IE 11"
   ],
-  "engines": {
-    "node": "1",
-    "yarn": ">=1.22.5"
-  },
   "scripts": {
     "dev": "next",
     "build": "next build",
