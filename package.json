@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/jvidalv/nextal.git"
   },
-  "author": "Josep Vidal <josepvidalvidal@gmail.com>",
+  "author": "Dragos Vlasie",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jvidalv/nextal/issues"
@@ -46,13 +46,14 @@
   "dependencies": {
     "@heroicons/react": "2.0.13",
     "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "chrome-aws-lambda": "^10.1.0",
     "classnames": "2.3.2",
     "dotenv": "^16.3.1",
     "gray-matter": "^4.0.3",
     "image-size": "^1.0.2",
     "jquery": "^3.7.0",
     "next": "13.1.2",
-    "chrome-aws-lambda": "^10.1.0",
     "puppeteer-core": "^10.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

@@ -18,36 +18,34 @@ const Home: NextPage = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-
   const fetchData = async (queries) => {
     try {
-      setLoading(true); // Set loading to true before fetching data
-
-      const response = await fetch('./.netlify/functions/scrape', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ queries }),
-      });
-
+      setLoading(true);
+  
+      // Convert the queries array to a query string
+      const queryString = queries.join(',');
+  
+      const response = await fetch(`https://puppeteer-paa.onrender.com/scrape?queries=${queryString}`);
+  
       if (!response.ok) {
         setError('Error fetching data');
         return;
       }
-
+  
       const data = await response.json();
       setResults(data);
     } catch (error) {
       console.error('Error:', error);
       setError('Error fetching data');
     } finally {
-      setLoading(false); // Set loading to false after fetching data, regardless of success or failure
+      setLoading(false);
     }
   };
-
+  
   const handleSubmitQueries = (queries) => {
     fetchData(queries);
   };
-
+  
   const exportToCsv = () => {
     const csvContent =
       'data:text/csv;charset=utf-8,' +
