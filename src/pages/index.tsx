@@ -73,8 +73,9 @@ const Home: NextPage = () => {
       <h1>People Also Ask Scraper</h1>
      <QueryForm onSubmit={handleSubmitQueries} />
 
+    {loading && <p style={{fontSize:"24px", margin: "70px auto"}}>Loading... <span style={{fontSize:"18px"}}>Using a free service so it does take a while</span></p>}
 
-     {results && <div className={styles.results}>
+     {!loading && results && <div className={styles.results}>
      { Object.entries(results).map(([category, questions]: [string, string[]])  => (
         <div key={category}>
           <h2>{category}</h2>
