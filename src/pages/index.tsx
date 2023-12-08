@@ -33,7 +33,18 @@ const Home: NextPage = () => {
       }
   
       const data = await response.json();
-      setResults(data);
+
+
+      const removeQueryString = (str) => str.split('?')[0].trim();
+
+      const sanitizedData = Object.fromEntries(
+        Object.entries(data).map(([key, value]: [any, any]) => [
+          key,
+          value.map((item) => removeQueryString(item) + "?"),
+        ])
+      );
+
+      setResults(sanitizedData);
     } catch (error) {
       console.error('Error:', error);
       setError('Error fetching data');
@@ -73,7 +84,7 @@ const Home: NextPage = () => {
       <h1>People Also Ask Scraper</h1>
      <QueryForm onSubmit={handleSubmitQueries} />
 
-    {loading && <p style={{fontSize:"24px", margin: "70px auto"}}>Loading... <span style={{fontSize:"18px"}}>Using a free service so it does take a while</span></p>}
+    {loading && <p style={{fontSize:"24px", margin: "70px auto", textAlign: "center"}}>Loading... <span style={{fontSize:"14px"}}>Using a free service so it does take a while</span></p>}
 
      {!loading && results && <div className={styles.results}>
      { Object.entries(results).map(([category, questions]: [string, string[]])  => (
